@@ -9,26 +9,37 @@ namespace ConsoleUI
 	{
 		static void Main(string[] args)
 		{
-			CarManager carManager = new CarManager(new EfCarDal());
-			carManager.Add(new Car{BrandId = 1 , ColorId = 1 , DailyPrice = 200 , Descriptions = "Good Car"});
-			//carManager.Delete(new Car {Id = 1 , BrandId = 1, ColorId = 1, DailyPrice = 200, Descriptions = "Good Car" });
-			//carManager.Update(new Car {Id = 1 , BrandId = 1, ColorId = 1, DailyPrice = 200, Descriptions = "Good Car" });
+			//RentalManagerTest();
 
-			Console.WriteLine("GetById Kısmı Çalıştı");
-			Console.WriteLine("GetById = {0}" ,carManager.GetById(1002).Descriptions);
+			//ColorManagerTest();
+		}
 
-			Console.WriteLine("GetAll Kısmı Çalıştı");
-			foreach (var car in carManager.GetAll())
+		private static void ColorManagerTest()
+		{
+			ColorManager colorManager = new ColorManager(new EfColorDal());
+			var result = colorManager.GetById(4);
+			Console.WriteLine(result.Message);
+
+			if (result.Success)
 			{
-				Console.WriteLine("Id = {0} ColorId = {1} BrandId = {2} DailyPrice = {3} Descriptions = {4}", car.Id, car.ColorId , car.BrandId , car.DailyPrice , car.Descriptions);
+				Console.WriteLine("Id = {0} Name = {1}", result.Data.Id, result.Data.Name);
 			}
+		}
 
-			Console.WriteLine("GetCarDetails Kısmı Çalıştı");
-			foreach (var car in carManager.GetCarDetails())
+		private static void RentalManagerTest()
+		{
+			RentalManager rentalManager = new RentalManager(new EfRentalDal());
+			var result = rentalManager.Add(new Rental { CarId = 5005, CustomerId = 1, RentDate = new DateTime(2021, 10, 2) });
+			Console.WriteLine(result.Message);
+
+			if (result.Success)
 			{
-				Console.WriteLine("Id = {0} BrandName = {1} ColorName = {2} DailyPrice {3}" , car.CarId , car.BrandName , car.ColorName , car.CarDailyPrice);
+				var result1 = rentalManager.GetAll();
+				foreach (var item in result1.Data)
+				{
+					Console.WriteLine("Id = {0} CarId = {1} CustomerId = {2} RentDate = {3} ReturnDate = {4}", item.Id, item.CarId, item.CustomerId, item.RentDate, item.ReturnDate);
+				}
 			}
-
 		}
 	}
 }
