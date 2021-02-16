@@ -10,8 +10,16 @@ namespace ConsoleUI
 		static void Main(string[] args)
 		{
 			//RentalManagerTest();
-
 			//ColorManagerTest();
+			RentalManager rentalManager = new RentalManager(new EfRentalDal());
+			var result = rentalManager.GetRentalDetails();
+			Console.WriteLine(result.Message);
+			foreach (var item in result.Data)
+			{
+				Console.WriteLine("RentalId = {0} BrandName = {1} UserName = {2}" ,item.RentalId , item.BrandName , item.UserFirstName );
+			}
+
+
 		}
 
 		private static void ColorManagerTest()
@@ -29,7 +37,7 @@ namespace ConsoleUI
 		private static void RentalManagerTest()
 		{
 			RentalManager rentalManager = new RentalManager(new EfRentalDal());
-			var result = rentalManager.Add(new Rental { CarId = 5005, CustomerId = 1, RentDate = new DateTime(2021, 10, 2) });
+			var result = rentalManager.Add(new Rental { CarId = 5010, CustomerId = 1, RentDate = new DateTime(2021, 10, 2) });
 			Console.WriteLine(result.Message);
 
 			if (result.Success)
